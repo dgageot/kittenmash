@@ -17,7 +17,7 @@ public class Kittens {
 			@Override
 			public void handle(Request req, Response resp) {
 				try {
-					resp.getPrintStream().append("Hello").close();
+					resp.getPrintStream().append("Kitten FaceMash").close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

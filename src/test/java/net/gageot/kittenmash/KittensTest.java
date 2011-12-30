@@ -1,13 +1,17 @@
 package net.gageot.kittenmash;
 
-import static org.fest.assertions.Assertions.*;
-import org.junit.Test;
+import net.sourceforge.jwebunit.junit.*;
+import org.junit.*;
 
 public class KittensTest {
 	@Test
-	public void canShowKittens() {
-		Kittens kittens = new Kittens();
+	public void canShowKittens() throws Exception {
+		Kittens.main(null);
 
-		assertThat(kittens.show()).isEqualTo("Kitten FaceMash");
+		WebTester webTester = new WebTester();
+		webTester.setBaseUrl("http://localhost:8080/");
+		webTester.beginAt("/");
+
+		webTester.assertTextPresent("Kitten FaceMash");
 	}
 }
