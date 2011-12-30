@@ -15,9 +15,9 @@ import static java.util.Arrays.*;
 import static net.gageot.kittenmash.util.Reflection.*;
 
 public class Kittens extends AbstractService implements Container {
-	private SocketConnection socketConnection;
 	private final int port;
 	private Injector injector;
+	private SocketConnection socketConnection;
 
 	public Kittens(int port) {
 		this.port = port;
