@@ -31,7 +31,7 @@ public class Kittens extends AbstractService implements Container {
 				String kittenId = path.get(1);
 				Files.copy(Paths.get("kitten", kittenId + ".jpg"), resp.getOutputStream());
 			} else {
-				resp.getPrintStream().append("Kitten FaceMash").close();
+				resp.getPrintStream().append("Kitten FaceMash");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
