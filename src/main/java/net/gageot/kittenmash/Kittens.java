@@ -3,6 +3,7 @@ package net.gageot.kittenmash;
 import com.google.common.collect.*;
 import com.google.common.util.concurrent.*;
 import com.google.inject.*;
+import net.gageot.kittenmash.util.*;
 import org.simpleframework.http.*;
 import org.simpleframework.http.core.*;
 import org.simpleframework.transport.connect.*;
@@ -11,6 +12,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+import static com.google.inject.name.Names.*;
 import static java.util.Arrays.*;
 import static net.gageot.kittenmash.util.Reflection.*;
 
@@ -21,7 +23,14 @@ public class Kittens extends AbstractService implements Container {
 
 	public Kittens(int port) {
 		this.port = port;
-		injector = Guice.createInjector();
+		injector = Guice.createInjector(new GuiceModule() {
+			@Override
+			protected void configure() {
+				bind(Object.class, named("kitten")).to(KittenController.class);
+				bind(Object.class, named("vote")).to(VoteController.class);
+				bind(Object.class, named("/")).to(IndexController.class);
+			}
+		});
 	}
 
 	@Override
@@ -30,14 +39,7 @@ public class Kittens extends AbstractService implements Container {
 		String action = Iterables.getFirst(path, "/");
 
 		try {
-			Object controller;
-			if (action.equals("kitten")) {
-				controller = injector.getInstance(KittenController.class);
-			} else if (action.equals("vote")) {
-				controller = injector.getInstance(VoteController.class);
-			} else {
-				controller = injector.getInstance(IndexController.class);
-			}
+			Object controller = injector.getInstance(Key.get(Object.class, named(action)));
 
 			invoke(controller, "render", asList(resp, path));
 		} finally {
