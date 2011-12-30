@@ -31,6 +31,9 @@ public class Kittens extends AbstractService implements Container {
 			if (action.equals("kitten")) {
 				String kittenId = path.get(1);
 				Files.copy(Paths.get("kitten", kittenId + ".jpg"), resp.getOutputStream());
+			} else if (action.equals("vote")) {
+				String html = FileUtils.readFileToString(new File("index2.html"));
+				resp.getPrintStream().append(html);
 			} else {
 				String html = FileUtils.readFileToString(new File("index.html"));
 				resp.getPrintStream().append(html);

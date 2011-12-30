@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link href='http://fonts.googleapis.com/css?family=Delius+Unicase' rel='stylesheet' type='text/css'>
+	<style>
+		body {
+			background-color: black;
+			color: white;
+		}
+
+		h1, h3 {
+			text-align: center;
+			font-family: 'Delius Unicase';
+			text-transform: uppercase;
+		}
+
+		h1 {
+			font-size: x-large;
+		}
+
+		h3 {
+			font-size: xx-large;
+		}
+
+		body > div {
+			margin: 0 auto;
+			text-align: center;
+			width: 740px;
+			height: 320px;
+		}
+
+		body > div > div {
+			width: 350px;
+			float: left;
+		}
+
+		img {
+			line-height: 300px;
+			vertical-align: middle;
+			-webkit-box-reflect: below 0 -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.8, transparent), to(white));
+		}
+	</style>
+</head>
+
+<body>
+<h1>Kitten FaceMash</h1>
+
+<h3>Which one's cuter?</h3>
+
+<div>
+	<div>
+		<div id="leftScore">Score : 1</div>
+		<img src="/kitten/1" alt="Left cat">
+	</div>
+	<div>
+		<div id="rightScore">Score : 0</div>
+		<img src="/kitten/2" alt="Right cat">
+	</div>
+</div>
+</body>
+</html>

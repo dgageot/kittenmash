@@ -29,4 +29,12 @@ public class KittensTest extends JWebUnitTester<Kittens> {
 
 		assertDownloadedFileEquals("kitten/2.jpg");
 	}
+
+	@Test
+	public void canVote() {
+		beginAt("/vote/1");
+
+		assertTextInElement("leftScore", "Score : 1");
+		assertTextInElement("rightScore", "Score : 0");
+	}
 }
