@@ -2,6 +2,7 @@ package net.gageot.kittenmash;
 
 import com.google.common.collect.*;
 import com.google.common.util.concurrent.*;
+import com.google.inject.*;
 import net.gageot.kittenmash.util.*;
 import org.apache.commons.io.*;
 import org.simpleframework.http.*;
@@ -21,9 +22,11 @@ public class Kittens extends AbstractService implements Container {
 	private SocketConnection socketConnection;
 	private final int port;
 	private Scores scores = new Scores();
+	private Injector injector;
 
 	public Kittens(int port) {
 		this.port = port;
+		injector = Guice.createInjector();
 	}
 
 	@Override
@@ -34,11 +37,11 @@ public class Kittens extends AbstractService implements Container {
 		try {
 			Object controller;
 			if (action.equals("kitten")) {
-				controller = new KittenController();
+				controller = injector.getInstance(KittenController.class);
 			} else if (action.equals("vote")) {
-				controller = new VoteController(scores);
+				controller = injector.getInstance(VoteController.class);
 			} else {
-				controller = new IndexController(scores);
+				controller = injector.getInstance(IndexController.class);
 			}
 
 			invoke(controller, "render", asList(resp, path));
@@ -54,6 +57,7 @@ public class Kittens extends AbstractService implements Container {
 	public static class IndexController {
 		private Scores scores;
 
+		@Inject
 		public IndexController(Scores scores) {
 			this.scores = scores;
 		}
@@ -71,6 +75,7 @@ public class Kittens extends AbstractService implements Container {
 	public static class VoteController {
 		private Scores scores;
 
+		@Inject
 		public VoteController(Scores scores) {
 			this.scores = scores;
 		}
