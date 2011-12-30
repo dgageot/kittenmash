@@ -15,6 +15,7 @@ import java.nio.file.*;
 import java.util.*;
 
 import static java.util.Arrays.*;
+import static net.gageot.kittenmash.util.Reflection.*;
 
 public class Kittens extends AbstractService implements Container {
 	private SocketConnection socketConnection;
@@ -40,10 +41,7 @@ public class Kittens extends AbstractService implements Container {
 				controller = new IndexController(scores);
 			}
 
-			Reflection.invoke(controller, "render", asList(resp, path));
-
-		} catch (Exception e) {
-			e.printStackTrace();
+			invoke(controller, "render", asList(resp, path));
 		} finally {
 			try {
 				resp.close();
