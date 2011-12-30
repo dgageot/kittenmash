@@ -25,7 +25,7 @@ public class Kittens extends AbstractService implements Container {
 		}
 	}
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		new Kittens(8080).startAndWait();
 	}
 
