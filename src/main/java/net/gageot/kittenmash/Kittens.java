@@ -31,13 +31,17 @@ public class Kittens extends AbstractService implements Container {
 		String action = Iterables.getFirst(path, "/");
 
 		try {
+			Object controller;
 			if (action.equals("kitten")) {
-				new KittenController().render(resp, path);
+				controller = new KittenController();
 			} else if (action.equals("vote")) {
-				new VoteController(scores).render(resp, path);
+				controller = new VoteController(scores);
 			} else {
-				new IndexController(scores).render(resp, path);
+				controller = new IndexController(scores);
 			}
+
+			Reflection.invoke(controller, "render", asList(resp, path));
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
