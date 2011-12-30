@@ -36,7 +36,7 @@ public class Kittens extends AbstractService implements Container {
 			} else if (action.equals("vote")) {
 				new VoteController(scores).render(resp, path);
 			} else {
-				new IndexController(scores).render(resp);
+				new IndexController(scores).render(resp, path);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -56,7 +56,7 @@ public class Kittens extends AbstractService implements Container {
 			this.scores = scores;
 		}
 
-		public void render(Response resp) throws IOException {
+		public void render(Response resp, List<String> path) throws IOException {
 			String html = FileUtils.readFileToString(new File("index.html"));
 			ST template = new ST(html, '$', '$');
 			template.add("leftScore", scores.get(1));
