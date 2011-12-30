@@ -32,21 +32,11 @@ public class Kittens extends AbstractService implements Container {
 
 		try {
 			if (action.equals("kitten")) {
-				String kittenId = path.get(1);
-				Files.copy(Paths.get("kitten", kittenId + ".jpg"), resp.getOutputStream());
+				new KittenController().render(resp, path);
 			} else if (action.equals("vote")) {
-				Integer kittenId = Integer.parseInt(path.get(1));
-				scores.win(kittenId);
-
-				resp.setCode(Status.TEMPORARY_REDIRECT.getCode());
-				resp.add("Location", "/");
+				new VoteController(scores).render(resp, path);
 			} else {
-				String html = FileUtils.readFileToString(new File("index.html"));
-				ST template = new ST(html, '$', '$');
-				template.add("leftScore", scores.get(1));
-				template.add("rightScore", scores.get(2));
-
-				resp.getPrintStream().append(template.render());
+				new IndexController(scores).render(resp);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -56,6 +46,46 @@ public class Kittens extends AbstractService implements Container {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+
+	public static class IndexController {
+		private Scores scores;
+
+		public IndexController(Scores scores) {
+			this.scores = scores;
+		}
+
+		public void render(Response resp) throws IOException {
+			String html = FileUtils.readFileToString(new File("index.html"));
+			ST template = new ST(html, '$', '$');
+			template.add("leftScore", scores.get(1));
+			template.add("rightScore", scores.get(2));
+
+			resp.getPrintStream().append(template.render());
+		}
+	}
+
+	public static class VoteController {
+		private Scores scores;
+
+		public VoteController(Scores scores) {
+			this.scores = scores;
+		}
+
+		public void render(Response resp, List<String> path) {
+			Integer kittenId = Integer.parseInt(path.get(1));
+			scores.win(kittenId);
+
+			resp.setCode(Status.TEMPORARY_REDIRECT.getCode());
+			resp.add("Location", "/");
+		}
+	}
+
+	public static class KittenController {
+		public void render(Response resp, List<String> path) throws IOException {
+			String kittenId = path.get(1);
+			Files.copy(Paths.get("kitten", kittenId + ".jpg"), resp.getOutputStream());
 		}
 	}
 
