@@ -6,6 +6,7 @@ import org.apache.commons.io.*;
 import org.simpleframework.http.*;
 import org.simpleframework.http.core.*;
 import org.simpleframework.transport.connect.*;
+import org.stringtemplate.v4.*;
 
 import java.io.*;
 import java.net.*;
@@ -32,11 +33,19 @@ public class Kittens extends AbstractService implements Container {
 				String kittenId = path.get(1);
 				Files.copy(Paths.get("kitten", kittenId + ".jpg"), resp.getOutputStream());
 			} else if (action.equals("vote")) {
-				String html = FileUtils.readFileToString(new File("index2.html"));
-				resp.getPrintStream().append(html);
+				String html = FileUtils.readFileToString(new File("index.html"));
+				ST template = new ST(html, '$', '$');
+				template.add("leftScore", 1);
+				template.add("rightScore", 0);
+
+				resp.getPrintStream().append(template.render());
 			} else {
 				String html = FileUtils.readFileToString(new File("index.html"));
-				resp.getPrintStream().append(html);
+				ST template = new ST(html, '$', '$');
+				template.add("leftScore", 0);
+				template.add("rightScore", 0);
+
+				resp.getPrintStream().append(template.render());
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
