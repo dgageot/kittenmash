@@ -1,17 +1,13 @@
 package net.gageot.kittenmash;
 
-import net.sourceforge.jwebunit.junit.*;
+import net.gageot.test.*;
 import org.junit.*;
 
-public class KittensTest {
+public class KittensTest extends JWebUnitTester<Kittens> {
 	@Test
-	public void canShowKittens() throws Exception {
-		Kittens.main(null);
+	public void canShowKittens() {
+		beginAt("/");
 
-		WebTester webTester = new WebTester();
-		webTester.setBaseUrl("http://localhost:8080/");
-		webTester.beginAt("/");
-
-		webTester.assertTextPresent("Kitten FaceMash");
+		assertTextPresent("Kitten FaceMash");
 	}
 }
