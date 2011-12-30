@@ -12,6 +12,8 @@ public class KittensTest extends JWebUnitTester<Kittens> {
 		assertTextPresent("Which one's cuter?");
 		assertImagePresent("/kitten/1", "Left cat");
 		assertImagePresent("/kitten/2", "Right cat");
+		assertTextInElement("leftScore", "Score : 0");
+		assertTextInElement("rightScore", "Score : 0");
 	}
 
 	@Test
