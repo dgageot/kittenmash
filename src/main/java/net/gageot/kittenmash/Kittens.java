@@ -8,10 +8,6 @@ import java.io.*;
 import java.net.*;
 
 public class Kittens {
-	public String show() {
-		return "Kitten FaceMash";
-	}
-
 	public static void main(String[] args) throws Exception {
 		new SocketConnection(new Container() {
 			@Override
