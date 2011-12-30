@@ -2,6 +2,7 @@ package net.gageot.kittenmash;
 
 import com.google.common.collect.*;
 import com.google.common.util.concurrent.*;
+import net.gageot.kittenmash.util.*;
 import org.apache.commons.io.*;
 import org.simpleframework.http.*;
 import org.simpleframework.http.core.*;
@@ -18,6 +19,7 @@ import static java.util.Arrays.*;
 public class Kittens extends AbstractService implements Container {
 	private SocketConnection socketConnection;
 	private final int port;
+	private Scores scores = new Scores();
 
 	public Kittens(int port) {
 		this.port = port;
@@ -33,17 +35,20 @@ public class Kittens extends AbstractService implements Container {
 				String kittenId = path.get(1);
 				Files.copy(Paths.get("kitten", kittenId + ".jpg"), resp.getOutputStream());
 			} else if (action.equals("vote")) {
+				Integer kittenId = Integer.parseInt(path.get(1));
+				scores.win(kittenId);
+
 				String html = FileUtils.readFileToString(new File("index.html"));
 				ST template = new ST(html, '$', '$');
-				template.add("leftScore", 1);
-				template.add("rightScore", 0);
+				template.add("leftScore", scores.get(1));
+				template.add("rightScore", scores.get(2));
 
 				resp.getPrintStream().append(template.render());
 			} else {
 				String html = FileUtils.readFileToString(new File("index.html"));
 				ST template = new ST(html, '$', '$');
-				template.add("leftScore", 0);
-				template.add("rightScore", 0);
+				template.add("leftScore", scores.get(1));
+				template.add("rightScore", scores.get(2));
 
 				resp.getPrintStream().append(template.render());
 			}
