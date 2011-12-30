@@ -48,7 +48,7 @@ public class Kittens extends AbstractService implements Container {
 
 				resp.getPrintStream().append(template.render());
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {
