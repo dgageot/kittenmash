@@ -1,6 +1,5 @@
 package net.gageot.kittenmash;
 
-import com.google.common.collect.*;
 import com.google.common.util.concurrent.*;
 import com.google.inject.*;
 import net.gageot.kittenmash.util.*;
@@ -12,6 +11,8 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+import static com.google.common.collect.Iterables.*;
+import static com.google.inject.Guice.*;
 import static com.google.inject.name.Names.*;
 import static java.util.Arrays.*;
 import static net.gageot.kittenmash.util.Reflection.*;
@@ -23,7 +24,7 @@ public class Kittens extends AbstractService implements Container {
 
 	public Kittens(int port) {
 		this.port = port;
-		injector = Guice.createInjector(new GuiceModule() {
+		injector = createInjector(new GuiceModule() {
 			@Override
 			protected void configure() {
 				bind(Object.class, named("kitten")).to(KittenController.class);
@@ -36,12 +37,10 @@ public class Kittens extends AbstractService implements Container {
 	@Override
 	public void handle(Request req, Response resp) {
 		List<String> path = asList(req.getPath().getSegments());
-		String action = Iterables.getFirst(path, "/");
+		String action = getFirst(path, "/");
 
 		try {
-			Object controller = injector.getInstance(Key.get(Object.class, named(action)));
-
-			invoke(controller, "render", asList(resp, path));
+			invoke(controller(action), "render", arguments(resp, path));
 		} finally {
 			try {
 				resp.close();
@@ -49,6 +48,14 @@ public class Kittens extends AbstractService implements Container {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	private List<Object> arguments(Response resp, List<String> path) {
+		return asList(resp, path);
+	}
+
+	private Object controller(String action) {
+		return injector.getInstance(Key.get(Object.class, named(action)));
 	}
 
 	public static void main(String[] args) {
