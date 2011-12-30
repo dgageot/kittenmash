@@ -2,6 +2,7 @@ package net.gageot.kittenmash;
 
 import com.google.common.collect.*;
 import com.google.common.util.concurrent.*;
+import org.apache.commons.io.*;
 import org.simpleframework.http.*;
 import org.simpleframework.http.core.*;
 import org.simpleframework.transport.connect.*;
@@ -31,7 +32,8 @@ public class Kittens extends AbstractService implements Container {
 				String kittenId = path.get(1);
 				Files.copy(Paths.get("kitten", kittenId + ".jpg"), resp.getOutputStream());
 			} else {
-				resp.getPrintStream().append("Kitten FaceMash");
+				String html = FileUtils.readFileToString(new File("index.html"));
+				resp.getPrintStream().append(html);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

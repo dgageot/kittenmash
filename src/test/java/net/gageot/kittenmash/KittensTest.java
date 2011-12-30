@@ -9,6 +9,7 @@ public class KittensTest extends JWebUnitTester<Kittens> {
 		beginAt("/");
 
 		assertTextPresent("Kitten FaceMash");
+		assertTextPresent("Which one's cuter?");
 	}
 
 	@Test
