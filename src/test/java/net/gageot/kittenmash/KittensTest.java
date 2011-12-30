@@ -17,4 +17,11 @@ public class KittensTest extends JWebUnitTester<Kittens> {
 
 		assertDownloadedFileEquals("kitten/1.jpg");
 	}
+
+	@Test
+	public void canAnotherKitten() {
+		beginAt("/kitten/2");
+
+		assertDownloadedFileEquals("kitten/2.jpg");
+	}
 }

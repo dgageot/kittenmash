@@ -22,6 +22,8 @@ public class Kittens extends AbstractService implements Container {
 		try {
 			if (req.getPath().getPath().equals("/kitten/1")) {
 				Files.copy(Paths.get("kitten/1.jpg"), resp.getOutputStream());
+			} else if (req.getPath().getPath().equals("/kitten/2")) {
+				Files.copy(Paths.get("kitten/2.jpg"), resp.getOutputStream());
 			} else {
 				resp.getPrintStream().append("Kitten FaceMash").close();
 			}
