@@ -1,5 +1,6 @@
 package net.gageot.kittenmash;
 
+import com.google.common.collect.*;
 import com.google.common.util.concurrent.*;
 import org.simpleframework.http.*;
 import org.simpleframework.http.core.*;
@@ -8,6 +9,9 @@ import org.simpleframework.transport.connect.*;
 import java.io.*;
 import java.net.*;
 import java.nio.file.*;
+import java.util.*;
+
+import static java.util.Arrays.*;
 
 public class Kittens extends AbstractService implements Container {
 	private SocketConnection socketConnection;
@@ -19,11 +23,13 @@ public class Kittens extends AbstractService implements Container {
 
 	@Override
 	public void handle(Request req, Response resp) {
+		List<String> path = asList(req.getPath().getSegments());
+		String action = Iterables.getFirst(path, "/");
+
 		try {
-			if (req.getPath().getPath().equals("/kitten/1")) {
-				Files.copy(Paths.get("kitten/1.jpg"), resp.getOutputStream());
-			} else if (req.getPath().getPath().equals("/kitten/2")) {
-				Files.copy(Paths.get("kitten/2.jpg"), resp.getOutputStream());
+			if (action.equals("kitten")) {
+				String kittenId = path.get(1);
+				Files.copy(Paths.get("kitten", kittenId + ".jpg"), resp.getOutputStream());
 			} else {
 				resp.getPrintStream().append("Kitten FaceMash").close();
 			}
