@@ -21,7 +21,6 @@ import static net.gageot.kittenmash.util.Reflection.*;
 public class Kittens extends AbstractService implements Container {
 	private SocketConnection socketConnection;
 	private final int port;
-	private Scores scores = new Scores();
 	private Injector injector;
 
 	public Kittens(int port) {
