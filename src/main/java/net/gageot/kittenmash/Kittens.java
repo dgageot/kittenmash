@@ -7,6 +7,7 @@ import org.simpleframework.transport.connect.*;
 
 import java.io.*;
 import java.net.*;
+import java.nio.file.*;
 
 public class Kittens extends AbstractService implements Container {
 	private SocketConnection socketConnection;
@@ -19,9 +20,19 @@ public class Kittens extends AbstractService implements Container {
 	@Override
 	public void handle(Request req, Response resp) {
 		try {
-			resp.getPrintStream().append("Kitten FaceMash").close();
+			if (req.getPath().getPath().equals("/kitten/1")) {
+				Files.copy(Paths.get("kitten/1.jpg"), resp.getOutputStream());
+			} else {
+				resp.getPrintStream().append("Kitten FaceMash").close();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				resp.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
