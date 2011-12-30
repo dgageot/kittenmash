@@ -7,7 +7,6 @@ import org.simpleframework.http.*;
 import org.stringtemplate.v4.*;
 
 import java.io.*;
-import java.util.*;
 
 public class IndexController {
 	private Scores scores;
@@ -17,7 +16,7 @@ public class IndexController {
 		this.scores = scores;
 	}
 
-	public void render(Response resp, List<String> path) throws IOException {
+	public void render(Response resp) throws IOException {
 		String html = FileUtils.readFileToString(new File("index.html"));
 		ST template = new ST(html, '$', '$');
 		template.add("leftScore", scores.get(1));

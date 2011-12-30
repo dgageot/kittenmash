@@ -1,5 +1,6 @@
 package net.gageot.kittenmash;
 
+import com.google.common.collect.*;
 import com.google.common.util.concurrent.*;
 import com.google.inject.*;
 import net.gageot.kittenmash.util.*;
@@ -51,7 +52,7 @@ public class Kittens extends AbstractService implements Container {
 	}
 
 	private List<Object> arguments(Response resp, List<String> path) {
-		return asList(resp, path);
+		return ImmutableList.builder().add(resp).addAll(Iterables.skip(path, 1)).build();
 	}
 
 	private Object controller(String action) {

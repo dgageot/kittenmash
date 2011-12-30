@@ -4,8 +4,6 @@ import com.google.inject.*;
 import net.gageot.kittenmash.util.*;
 import org.simpleframework.http.*;
 
-import java.util.*;
-
 public class VoteController {
 	private Scores scores;
 
@@ -14,8 +12,7 @@ public class VoteController {
 		this.scores = scores;
 	}
 
-	public void render(Response resp, List<String> path) {
-		Integer kittenId = Integer.parseInt(path.get(1));
+	public void render(Response resp, int kittenId) {
 		scores.win(kittenId);
 
 		resp.setCode(Status.TEMPORARY_REDIRECT.getCode());
