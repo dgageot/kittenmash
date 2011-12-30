@@ -38,12 +38,8 @@ public class Kittens extends AbstractService implements Container {
 				Integer kittenId = Integer.parseInt(path.get(1));
 				scores.win(kittenId);
 
-				String html = FileUtils.readFileToString(new File("index.html"));
-				ST template = new ST(html, '$', '$');
-				template.add("leftScore", scores.get(1));
-				template.add("rightScore", scores.get(2));
-
-				resp.getPrintStream().append(template.render());
+				resp.setCode(Status.TEMPORARY_REDIRECT.getCode());
+				resp.add("Location", "/");
 			} else {
 				String html = FileUtils.readFileToString(new File("index.html"));
 				ST template = new ST(html, '$', '$');
