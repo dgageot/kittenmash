@@ -1,8 +1,9 @@
 package net.gageot.kittenmash.util;
 
-import java.lang.reflect.Method;
-import java.util.List;
-import com.google.common.base.Throwables;
+import com.google.common.base.*;
+
+import java.lang.reflect.*;
+import java.util.*;
 
 /**
  * Should be into src/main or a dependency jar. I put it here to make the
@@ -15,7 +16,7 @@ public class Reflection {
 
 	public static void invoke(Object target, String methodName, List<Object> arguments) {
 		try {
-			for (Method method : target.getClass().getMethods()) {
+			for (Method method : target.getClass().getDeclaredMethods()) {
 				if (!method.getName().equals(methodName)) {
 					continue;
 				}
@@ -31,6 +32,7 @@ public class Reflection {
 					convertedArguments[i++] = convertedArgument;
 				}
 
+				method.setAccessible(true);
 				method.invoke(target, convertedArguments);
 			}
 		} catch (Exception e) {

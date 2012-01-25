@@ -2,7 +2,6 @@ package net.gageot.test;
 
 import ch.qos.logback.classic.*;
 import com.google.common.util.concurrent.*;
-import com.google.inject.*;
 import net.gageot.kittenmash.*;
 import org.junit.*;
 import org.slf4j.*;
@@ -21,10 +20,6 @@ public abstract class JWebUnitTester<T extends Service> extends WebTesterExtende
 
 	protected JWebUnitTester() {
 		((LoggerContext) LoggerFactory.getILoggerFactory()).getLogger("ROOT").setLevel(INFO);
-	}
-
-	protected void setUp(Binder binder) {
-		// To override if needed
 	}
 
 	@Before
@@ -50,16 +45,7 @@ public abstract class JWebUnitTester<T extends Service> extends WebTesterExtende
 		ParameterizedType parameterizedType = (ParameterizedType) getClass().getGenericSuperclass();
 		Class<T> serverClass = (Class<T>) parameterizedType.getActualTypeArguments()[0];
 
-		try {
-			return serverClass.getDeclaredConstructor(int.class, Module[].class).newInstance(port, new Module[]{new AbstractModule() {
-				@Override
-				protected void configure() {
-					setUp(binder());
-				}
-			}});
-		} catch (NoSuchMethodException e) {
-			return serverClass.getDeclaredConstructor(int.class).newInstance(port);
-		}
+		return serverClass.getDeclaredConstructor(int.class).newInstance(port);
 	}
 
 	@After

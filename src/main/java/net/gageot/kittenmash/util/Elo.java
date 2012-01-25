@@ -1,8 +1,5 @@
 package net.gageot.kittenmash.util;
 
-import javax.inject.Singleton;
-
-@Singleton
 public class Elo {
 	private static final int MAX = 10;
 	private static final int START_SCORE = 1000;
