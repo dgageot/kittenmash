@@ -6,15 +6,24 @@ import org.junit.*;
 
 import java.util.*;
 
+import static com.google.inject.util.Modules.*;
 import static org.mockito.Mockito.*;
 
-public class KittensTest extends JWebUnitTester<Kittens> {
+public class KittensWebAppTest extends JWebUnitTester<WebServer> {
 	private final Random spyRandom = spy(new Random());
 
 	@Override
-	protected void overrideBeans(Binder binder) {
-		binder.bind(Random.class).toInstance(spyRandom);
+	protected Module useModule() {
+		return override(new KittenWebApp()).with(new AbstractModule() {
+			@Override
+			protected void configure() {
+				bind(Random.class).toInstance(spyRandom);
+			}
+		});
+	}
 
+	@Before
+	public void setUpMocks() {
 		when(spyRandom.nextInt(10)).thenReturn(1, 2, 1, 2, 1, 2, 1, 2, 1, 2);
 	}
 
@@ -69,18 +78,6 @@ public class KittensTest extends JWebUnitTester<Kittens> {
 		clickLinkWithImage("/kitten/1");
 
 		assertTextInElement("leftScore", "Score: 2");
-		assertTextInElement("rightScore", "Score: 1");
-	}
-
-	@Test
-	public void canVoteBis() {
-		when(spyRandom.nextInt(10)).thenReturn(1, 2, 2, 1);
-
-		beginAt("/");
-
-		clickLinkWithImage("/kitten/1");
-
-		assertTextInElement("leftScore", "Score: 0");
 		assertTextInElement("rightScore", "Score: 1");
 	}
 }

@@ -2,7 +2,8 @@ package net.gageot.kittenmash;
 
 import com.google.common.util.concurrent.*;
 import com.google.inject.*;
-import org.simpleframework.http.*;
+
+import static net.gageot.kittenmash.WebServer.*;
 
 public class VoteController {
 	private final AtomicLongMap<Integer> scores;
@@ -12,10 +13,9 @@ public class VoteController {
 		this.scores = scores;
 	}
 
-	public void render(Response resp, int kittenId) {
+	public void render(Answer answer, int kittenId) {
 		scores.incrementAndGet(kittenId);
 
-		resp.setCode(Status.TEMPORARY_REDIRECT.getCode());
-		resp.add("Location", "/");
+		answer.redirect("/");
 	}
 }

@@ -1,13 +1,11 @@
 package net.gageot.kittenmash;
 
-import org.simpleframework.http.*;
-
 import java.io.*;
 
-import static com.google.common.io.Files.*;
+import static net.gageot.kittenmash.WebServer.*;
 
 public class KittenController {
-	public void render(Response resp, String kittenId) throws IOException {
-		copy(new File("kitten", kittenId + ".jpg"), resp.getOutputStream());
+	public void render(Answer answer, String kittenId) throws IOException {
+		answer.serve(new File("kitten", kittenId + ".jpg"));
 	}
 }
